@@ -68,3 +68,60 @@ d <- 1.2
 
 x <- a1+((1:20) - 1)*d
 x
+
+# a Calcula la suma de sus elementos usando la funcion sum y comprueba que coincide con
+# formula n(a1+an)/2 con n=20
+
+n<-20
+names(x)<-paste("a", 1:n, sep="")
+(n*(x["a1"]+x["a20"]))/2
+
+sum(x)
+
+# b Calcula la (cuasi-)desviacion tipica usando al funcion sd y comprueba
+# que coincide con |d|sqrt(n(n+1)/12)
+
+abs(d)*sqrt((n*(n+1))/12)
+sd(x)
+all.equal(abs(d)*sqrt((n*(n+1))/12), sd(x))
+
+# c Calcula el producto de sus elementos usando la funcion prod y comprueba
+# que coincide con la formula dada
+
+prod(x)
+all.equal(prod(x), d**n * gamma(a1/d + n)/gamma(a1/d))
+
+# ------------------------------------------------------------------------------------------------------
+
+# Ejercicio 5: Crea un vector x con elementos 2, 2, 8, 8, 7, 6, 1, 5
+# Despues en una unica sentencia calcula las diferencias
+# sucesivas entre sus elementos
+
+x <- c(2, 2, 8, 8, 7, 6, 1, 5)
+x
+
+n <- length(x)
+x[(2:n)]-x[1:n-1]
+diff(x)
+
+# ------------------------------------------------------------------------------------------------------
+
+# Ejercicio 6: Crea un vector con nombre ABE con las letras
+# del abecedario en mayuscula
+
+ABE <- LETTERS[1:26]
+ABE
+
+# a Selecciona aleatoriamente 5 letras (usando la 
+# funcion sample con argumento replace=FALSE)
+# y almacenalas en un vector con nombre ABE.5
+
+ABE.5 <- sample(ABE, 5, replace=FALSE)
+ABE.5
+
+# b Crea un vector (con nombre PAL) con 2 elementos
+# consistentes en 2 palabras dormadas colocando aleatoriamente
+# las 5 letras anteriores sin repeticiones.
+
+PAL <- paste(sample(ABE.5, length(ABE.5), replace=FALSE), collapse='')
+PAL
