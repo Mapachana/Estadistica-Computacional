@@ -231,3 +231,34 @@ double()
 character()
 
 ```
+
+## Apuntes clase 3 de Marzo
+
+### paste y paste0
+
+Paste pega las cadenas de caracteres entre ellas, mientras la función paste0 es igual pero necesita menos argumentos.
+
+```R
+código página 7 de 50 de parte 2 etma 2.
+```
+
+Para crear vectores de caracteres se usa la función `letters`.
+
+### Acceder a los elementos del vector
+
+Para acceder podemos usar `[]`. Los elementos empiezan numerados en 1.
+
+Si entre los corchets el número es negativo se elimina el valor de la posición positiva correspondiente (-2 elimina el elemento 2).
+
+```R
+x<- -5:5
+x> 0 # vector de true false de longitud de x indicando si cada elemento cumple la condicion
+x[x>0] # vector con longitud la de los elementos que cumplen la condicion apareciedno sus valores
+```
+
+También si se pone entre los corchetes una expresión lógica se accede a los elementos que la verifiquen.
+
+### Operaciones con vectores
+
+Se puede operar con vectores lógicos y numéricos, para eso el vector lógico lo pasa a numérico, el TRUE es 1 y FALSE es 0.
+
