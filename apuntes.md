@@ -262,3 +262,97 @@ También si se pone entre los corchetes una expresión lógica se accede a los e
 
 Se puede operar con vectores lógicos y numéricos, para eso el vector lógico lo pasa a numérico, el TRUE es 1 y FALSE es 0.
 
+## Apuntes clase 8 de Marzo
+
+### Crear factores
+
+Se pueden crear los factores con el argumento `levels` al crearlo.
+
+También hay un argumento `ordered`, que puede crear factores ordenados.
+
+### Ejemplos
+
+```R
+# Hacer la media de la edad por grupos de las clases de un factor
+sexo.f<-<-factor(c(1,1,2,1,1,2,2,1,2,1),labels=c('hombre','mujer'))
+edad<-c(23, 25, 20, 19, 20, 22, 24, 20, 23, 19)
+
+mean(edad[sexo.f=='hombre'])
+mean(edad[sexo.f=='mujer'])
+tapply(edad, sexo.f, mean)
+tapply(edad, sexo.f, sd)
+tapply(edad, sexo.f, summary)
+
+```
+
+### Matrices
+
+Para asignar nombre a las columnas de una matriz se usa `colnames` o `names`. Para las filas se usa `rownames`.
+
+La función `row` devuelve una matriz con los elementos los números indicando las filas en las que está cada elemento, análogamente lo hace `col`.
+
+### Ejercicios
+
+> Crear una matriz cuadrada A de dimensión 3 con números aleatorios de una uniforme.
+> A partir de ella:
+> i) Localizar los valores que sean mayores o iguales a 0.5
+> ii) Contar cuantos cumplen la condicion anterior
+> iii) Crear una nueva matriz B de la misma dimensión con los valores que cumplen la condición y el resto 0's.
+> iv) Crear dos matrices una con el triángulo superior de A y otra el inferior (el resto NAs).
+> Pista: Pueden ser útiles las funciones row() y col() aplicadas a la matriz
+
+```R
+# Crear una matriz cuadrada A de dimensión 3 con números aleatorios de una uniforme.
+set.seed(1)
+
+A<-matrix(runif(9),3,3)
+# A<-matrix(runif(9),3)
+A
+
+# Localizar los valores que sean mayores o iguales a 0.5
+A>=0.5
+
+# Contar cuantos cumplen la condicion anterior
+sum(A>=0.5)
+# Otra forma de hacerlo
+length(A[A>=0.5])
+
+# Crear una nueva matriz B de la misma dimensión con los valores que cumplen la condición y el resto 0's.
+B<-A
+B[A<0.5]<-0
+B
+
+
+# Crear dos matrices una con el triángulo superior de A y otra el inferior (el resto NAs).
+
+```
+### Ejemplos
+
+```R
+A<-matrix(c(0, 1, -1, 2), 2,2)
+A
+A*A
+A%*%A
+crossprod(A,A)
+rowSums(A)
+colSums(A)
+rowMeans(A)
+colMeans(A)
+```
+
+```R
+A<-matrix(c(3,5,2,4,-2,,-2,-1,1,1),3,3)
+A
+b<-c(8,4,1)
+solve(A,b)
+```
+
+```R
+AA<-crossprod(A,A)
+solve(AA)
+# descomposicion de cholesky a A
+U<-chol(AA) 
+t(u)%*%U # da AA
+AA
+chol2inv(U) # igual que solve(AA)
+```
