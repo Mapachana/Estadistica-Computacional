@@ -18,6 +18,7 @@ mx
 length(x[x>mx])
 # e Calcula la posicion que ocupa el elemento de x mas proximo por encima de mx
 min(which(x>mx))
+# segun la profe which(x==min(x[x>mx]))
 # f Crea otro vector y con los primeros n numeros impares
 y <- seq(1, by=2, length.out=n)
 y
