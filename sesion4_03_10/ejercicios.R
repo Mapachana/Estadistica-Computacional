@@ -1,4 +1,4 @@
-# Ejercicios del dia 10 de Marzo
+# Ejercicios del dia 10 de Marzo de Ana Buendia Ruiz-Azuaga
 
 # Ejercicio 1
 # Ejecuta las siguientes sentencias y extrae conclusiones sobre el tipo de objeto que devuelven
