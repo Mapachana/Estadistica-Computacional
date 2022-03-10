@@ -7,7 +7,7 @@ A <- matrix(1:9, 3, 3)
 x <- 1:3
 A%*%x
 # toma x como vector columna y devuelve un vector columna
-A%*%t(x)
+#A%*%t(x)
 # Argumentos no compatibles porque una matriz no se multiplica por un vector fila
 x%*%A
 # Toma x como vector fila y por tanto devuelve un vector fila
