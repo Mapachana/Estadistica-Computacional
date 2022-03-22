@@ -142,12 +142,37 @@ curve(b_gorrito[1]+b_gorrito[2]*x, -3, 3, add=TRUE, col=2)
 # Claramente cuantos mas datos mas se acercan el modelo estimado y el modelo, pero a partir
 # de cierto numero no merece la pena hacer mas observaciones
 
-
-
 # ------------------------------------------------------------------------------------
 # Ejercicio 6
 
 
+# Cojo la muestra del ejercicio 5
+n <- 5
+set.seed(2)
+x <- rnorm(n)
+y <- 1+x+rnorm(n, 0, 0.1)
 
+# Crea la matriz de regresion X y el vector de respuesta y
+X <- cbind(1, x)
+
+# a)
+QR <- qr(X)
+
+# b)
+Q <- qr.Q(QR)
+Q
+
+# c)
+b <- t(Q)%*%y
+b
+
+# d)
+R <- qr.R(QR)
+R
+
+# e)
+backsolve(R,b)
 
 # ------------------------------------------------------------------------------------
+# Ejercicio 7 (Ejercicio propuesto)
+
