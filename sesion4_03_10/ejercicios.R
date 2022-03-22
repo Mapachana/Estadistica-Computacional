@@ -176,3 +176,28 @@ backsolve(R,b)
 # ------------------------------------------------------------------------------------
 # Ejercicio 7 (Ejercicio propuesto)
 
+n <- 3
+A <- matrix(rep(1:n, times=n, each=n)^rep(1:n, times=n), ncol=n, nrow=n)
+A
+
+b <- A %*%rep(1,n)
+
+# a)
+solve(A,b)
+
+# b)
+rcond(A)
+
+# c)
+
+n <- 12
+A <- matrix(rep(1:n, times=n, each=n)^rep(1:n, times=n), ncol=n, nrow=n)
+A
+b <- A %*%rep(1,n)
+#solve(A,b)
+rcond(A)
+
+# Hay un mal condicionamiento que se agrava conforme crece n
+# Para resolverlo
+cA <- rcond(A)
+solve(A,b,tol=cA)
