@@ -1,0 +1,7 @@
+"     YEAR","    NAME","     TIME","  Country","   Gender"
+"Min.   :1896  ","Length:50         ","Min.   : 9.63  ","Length:50         ","Length:50         "
+"1st Qu.:1936  ","Class :character  ","1st Qu.:10.15  ","Class :character  ","Class :character  "
+"Median :1968  ","Mode  :character  ","Median :10.79  ","Mode  :character  ","Mode  :character  "
+"Mean   :1964  ",NA,"Mean   :10.69  ",NA,NA
+"3rd Qu.:1992  ",NA,"3rd Qu.:11.04  ",NA,NA
+"Max.   :2016  ",NA,"Max.   :12.20  ",NA,NA
