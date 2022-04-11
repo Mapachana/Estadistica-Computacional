@@ -1,0 +1,111 @@
+# Ejercicios del dia 31 de Marzo de Ana Buendia Ruiz-Azuaga
+
+# Ejercicio 1
+
+# Leemos datos
+muestra <- scan()
+25.03 18.59 47.20 80.20 187.67
+95.94 35.07 145.38 9.52 128.14
+136.69 180.82 49.67 33.41 4.16
+94.87 102.25 11.04 35.14 151.15
+17.14 81.94 20.01 125.26 7.11
+61.36 55.59 10.80 31.88 16.39
+45.95 4.98 23.20 8.78 30.68
+22.65 13.19 40.62 2.78 35.41
+8.63 17.04 8.02 126.54 2.11
+136.93 17.39 37.73 84.53 14.22
+
+# Funcion logaritmo de L
+logl<-function(theta){
+    a<-theta[1]
+    b<-theta[2]
+    l<-sum(log(dgamma(x=muestra,shape=a,scale=b)))
+    return(-l)
+}
+
+# Comprobamos que la funcion funciona
+logl(c(2,1))
+
+# Establecer valores iniciales para los parametros
+b0<-a0<-1
+
+# Usamos la funcion optim
+res<-optim(par=c(a0,b0),fn=logl)
+res$par # Mejor par de parametros obtenido
+res$value # Valor de la funcion para dichos parametros
+res$convergence # Valor que indica si se ha convergido o codigos de error
+
+# Prueba para otros valores
+res<-optim(par=c(2,3),fn=logl)
+res$par # Mejor par de parametros obtenido
+res$value # Valor de la funcion para dichos parametros
+res$convergence # Valor que indica si se ha convergido o codigos de error
+# Se ve que los valores optimos para los parametros varian ligeramente, pero el valor de la funcion no
+
+# Resolvemos ahora con la funcion solnp
+library(Rsolnp)
+
+res<-solnp(pars=c(a0,b0),fun=logl,LB=c(0,0))
+res$pars
+
+# Probamos ahora usando valores iniciales mas cercanos a la solucion
+s <- var(muestra)
+x_barra <- mean(muestra)
+
+a_gorro <- s/x_barra
+b_gorro <- x_barra/a_gorro
+
+res<-solnp(pars=c(a_gorro,b_gorro),fun=logl,LB=c(0,0))
+res$pars
+# Hay mucha diferencia de los valores obtenidos con respecto a los obtenidos antes
+
+# Ahora vamos a usar la funcion de maxlik
+library(maxLik)
+logl2<-function(theta) -logl(theta)
+res<-maxLik(logl2,start=c(1,1))
+res
+res$estimate
+
+# Probamos ahora con los valores iniciales a y b gorro
+res<-maxLik(logl2,start=c(a_gorro, b_gorro))
+res
+res$estimate
+
+# Añadimos restricciones
+A<-matrix(c(1,0,0,1),2)
+B<-c(0,0)
+maxLik(logl2,start=c(1,1),constraints=list(ineqA=A,ineqB=B))
+
+# Metodo 2
+f<-function(a) log(a)-digamma(a)- log(mean(muestra))+mean(log(muestra))
+res <- uniroot(f, c(0.1, 100))
+res
+
+a <- res$root
+b = x_barra/a
+# Obtenemos valores similares a los obtenidos antes
+a
+b
+
+# ------------------------------------------------------------------------------------
+# Ejercicio 2
+
+medias <- function(x){
+    if (is.numeric(x)){
+        arit <- mean(x, na.rm=TRUE)
+
+        prod(x)
+        
+        resultado <- list(arit, -1, -1)
+        names(resultado) <- c("arit", "geo", "armo")
+        
+        return(resultado)
+    }
+    else{
+        print("El vector no es numerico, no hago nada")
+    }
+}
+
+medias(c(1,2,3, NA))
+
+
