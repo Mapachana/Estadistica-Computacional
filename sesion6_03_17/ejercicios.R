@@ -48,7 +48,7 @@ mat
 # Ejercicio 2
 
 xi <- c(1.2, 1.8, 2.2, 2.5, 1.1)
-yi <- c(15, 18, 10, 12, 16)
+yi <- c(15, 18, 10, 12, 6)
 ni <- c(12, 23, 5, 9, 11)
 datos <- data.frame(xi, yi, ni)
 datos
@@ -83,7 +83,60 @@ mean(datos.n[,'yi'])
 var(datos.n[,'yi'])
 
 # e
-# no me ha dado tiempo :(
+# Con transform
+datos.n1<-transform(datos.n,zx=(xi-x_media)/sqrt(x_var),zy=(yi-y_media)/sqrt(y_var))
+head(datos.n1)
+
+# Con within
+datos.n2<-within(datos.n,{zx<-(xi-x_media)/sqrt(x_var);zy<-(yi-y_media)/sqrt(y_var)})
+head(datos.n2)
 
 # ------------------------------------------------------------------------------------
 # Ejercicio 3
+
+# a
+head(ChickWeight)
+
+tail(ChickWeight)
+
+# b
+str(ChickWeight)
+
+# c
+summary(ChickWeight)
+
+# d
+peso.dieta<-tapply(ChickWeight$weight,ChickWeight$Diet,summary)
+class(peso.dieta)
+mode(peso.dieta)
+is.list(peso.dieta)
+# es una lista
+
+# e
+# esta cortada la solucion
+
+# f
+peso.dieta.2<-aggregate(ChickWeight$weight,by=list(ChickWeight$Diet),summary)
+class(peso.dieta.2)
+
+# g
+Chick100<-ChickWeight[sample(1:nrow(ChickWeight),100),]
+
+# h
+# columnas permutadas aleatoriamente
+p<-ncol(Chick100)
+Chick100[,sample(1:p,p,replace=FALSE)]
+
+# i
+# columnas por orden alfabético
+Chick100[1,order(names(Chick100))]
+
+# j
+# ordenacion segun diet
+Chick100[order(Chick100$Diet),]
+# ordenacion segun diet y weight
+Chick100[order(Chick100$Diet,Chick100$weight),]
+
+# k
+new<-Chick100[rev(order(Chick100$weight)),]
+new[!duplicated(new$Diet),]
