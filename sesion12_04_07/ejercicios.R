@@ -195,4 +195,19 @@ plot(1:500, dif.eq(0.95, 2.99, 500))
 # c
 dif.eq2 <- function(x1, r){
     tol = 0.02
+
+    num_elems = 1
+    resultado = 0
+    resultado[num_elems] = x1
+    dif <- 1
+
+    while(dif >= tol){
+        num_elems = num_elems +1
+        resultado[num_elems] = r*resultado[num_elems-1]*(1-resultado[num_elems-1])
+        dif = abs(resultado[num_elems]-resultado[num_elems-1])
+    }
+
+    return(list(numiter=num_elems, suc=resultado))
 }
+
+dif.eq2(0.95,2.99)
