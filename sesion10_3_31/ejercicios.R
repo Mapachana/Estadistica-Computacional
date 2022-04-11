@@ -90,13 +90,33 @@ b
 # ------------------------------------------------------------------------------------
 # Ejercicio 2
 
+print("EJERCICIO 2")
+
 medias <- function(x){
     if (is.numeric(x)){
+        x <- x[!is.na(x)] # elimino los na
+        
         arit <- mean(x, na.rm=TRUE)
 
-        prod(x)
+        if (min(x) > 0){
+            geo <- exp(mean(log(x)))
+        }
+        else{
+            geo <- NA
+        }
+
+        if (any(x==0)){
+            armo <- NA
+        }
+        else{
+            armo <- 1/mean(1/x)
+        }
+
+        if (is.na(geo) || is.na(armo)){
+            warning("El valor tiene valores menores o iguales que 0")
+        }
         
-        resultado <- list(arit, -1, -1)
+        resultado <- list(arit, geo, armo)
         names(resultado) <- c("arit", "geo", "armo")
         
         return(resultado)
@@ -106,6 +126,76 @@ medias <- function(x){
     }
 }
 
-medias(c(1,2,3, NA))
+medias(1:10)
+medias(c(1:10,NA))
+medias(0:10)
+medias(-1:10)
 
 
+# ------------------------------------------------------------------------------------
+# Ejercicio 3
+
+mediana <- function(x){
+    if (missing(x) || !is.numeric(x)){
+        stop("Se debe proporcionar un x numerico")
+    }
+
+    # Elimino valores perdidos
+    x <- x[!is.na(x)]
+
+    # Ordeno x
+    x_ord = sort(x)
+    n <- length(x)
+
+    if (n%%2 == 0){
+        mediana <- (x_ord[n/2]+x_ord[n/2 +1])/2
+    }
+    else{
+        mediana <- x[ceiling(n/2)]
+    }
+
+    return(mediana)
+}
+
+mediana(1:5)
+mediana(1:6)
+mediana(c(1:6,NA))
+#mediana("hola")
+set.seed(1)
+mediana(runif(20))
+
+
+# ------------------------------------------------------------------------------------
+# Ejercicio 4
+
+cuartiles <- function(x){
+    if (missing(x) || !is.numeric(x)){
+        stop("Debe proporcionar x numerico")
+    }
+
+    x <- x[!is.na(x)]
+    xord <- sort(x)
+    n <- length(x)
+
+    pos.q1 <- (n+1)/4
+    i <- trunc(pos.q1)
+    q1 <- x[i]+(pos.q1-i)*(x[i+1]-x[i])
+
+    if (n%%2 == 0){
+        q2 <- (xord[n/2]+xord[n/2 +1])/2
+    }
+    else{
+        q2 <- xord[ceiling(n/2)]
+    }
+
+    pos.q3 <- 3*(n+1)/4
+    i <- trunc(pos.q3)
+    q3 <- x[i]+(pos.q3-i)*(x[i+1]-x[i])
+
+    return(list(Q1=q1, Q2=q2, Q3=q3))
+}
+
+cuartiles(1:9)
+cuartiles(1:10)
+quantile(1:9, c(0.25, 0.5, 0.75))
+quantile(1:10, c(0.25, 0.5, 0.75))
