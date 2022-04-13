@@ -164,6 +164,8 @@ Sirve para crear vectores de tipo `character` (cadenas de caracteres). Pega vari
 
 Una variante es `paste0`, que (si no me equivoco) lleva implicito el separador vacío.
 
+Otro argumento es `collapse`, que toma TRUE o FALSE.
+
 ```R
 nombres <- paste(c("X", "Y"), 1:10, sep="")
 # X1 Y2 X3 Y4 X5 Y6 X7 Y8 X9 Y10
