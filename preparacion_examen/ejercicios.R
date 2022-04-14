@@ -221,3 +221,131 @@ rcond(A)
 
 # c
 # Paso de repetir, se va agravando el condicionamiento y ya
+
+
+# -------------------------------------------------------------------------------------------------------------------
+# Ejercicio dia 17 de Marzo
+
+
+# --------------- Ejercicio 1
+
+lista <- list(x1=1:5, x2=2:6, x3=3:7)
+
+# a
+x <- runif(10)
+lista$x <- x
+lista
+
+# b
+y <- rnorm(10)
+lista$y <- y
+
+# c
+lapply(lista, sum)
+sapply(lista, sum)
+# lapply devuelve una lista y sapply un vector
+
+# d
+reg<-lm(y~x)
+typeof(reg)
+
+# e
+lapply(reg, class)
+
+# f
+matriz <- cbind(reg$residuals, reg$fitted.values, x, y)
+colnames(matriz) <- c("residuals", "fitted.values", "x", "y")
+matriz
+
+# --------------- Ejercicio 2
+
+xi<-c(1.2,1.8,2.2,2.5,1.1)
+yi<-c(15,18,10,12,6)
+ni<-c(12,23,5,9,11)
+datos<-data.frame(xi,yi,ni)
+
+# a
+n<-sum(datos$ni)
+n
+
+# b
+mx <- sum(ni*xi)/n
+mx
+sx <- sum(ni*(xi-mx)^2)/(n-1)
+sx
+
+my <- sum(ni*yi)/n
+my
+sy <- sum(ni*(yi-my)^2)/(n-1)
+sy
+
+# c
+datos.n <- data.frame(cbind(
+    rep(xi, ni),
+    rep(yi, ni)
+    ))
+colnames(datos.n) <- c('xi', 'yi')
+datos.n
+
+# d
+mean(datos.n$xi)
+var(datos.n$xi)
+
+mean(datos.n$yi)
+var(datos.n$yi)
+
+# e
+
+transform(datos.n, zxi=(xi-mx)/sx, zyi=(yi-my)/sy)
+within(datos.n, {
+    zxi<-(xi-mx)/sx
+    zyi<-(yi-my)/sy
+})
+
+# --------------- Ejercicio 3
+
+# a
+head(ChickWeight)
+tail(ChickWeight)
+
+# b
+str(ChickWeight)
+
+# c
+summary(ChickWeight)
+
+# d
+peso.dieta <- tapply(ChickWeight$weight, ChickWeight$Diet, summary)
+
+# e
+# no se ve
+peso.dieta.2 <- 0
+
+# f
+peso.dieta.2 <- aggregate(ChickWeight$weight, by=list(ChickWeight$Diet), summary)
+peso.dieta.2
+
+# g
+chick100 <- ChickWeight[sample(1:nrow(ChickWeight), 100), ]
+chick100
+
+# h
+chick100[,sample(1:ncol(chick100), ncol(chick100))]
+
+# i
+chick100[, order(colnames(chick100))]
+
+# j
+chick100[order(chick100$Diet,chick100$weight),]
+
+# k
+new<-chick100[rev(order(chick100$weight)),]
+new[!duplicated(new$Diet),]
+
+
+# -------------------------------------------------------------------------------------------------------------------
+# Ejercicio dia 24 de Marzo
+
+
+# --------------- Ejercicio 1
+
