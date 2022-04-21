@@ -42,6 +42,9 @@ mpeq <- mean(hatco.peq$y)
 mpeq
 mgra <-mean(hatco.gra$y)
 mgra
+
+tapply(hatco$y, hatco$x8, mean)
+aggregate(hatco$y, by=list(hatco$x8), mean)
 # f
 sum(hatco.peq$y > mpeq)
 sum(hatco.gra$y > mgra)
@@ -69,3 +72,21 @@ progarit(2, 2, 2)
 #progarit(2,"a",1)
 #progarit(1,2)
 
+progarit2 <- function(n, a1, d, explicit=FALSE){
+    if(missing(n) || missing(a1) || missing(d) || !is.numeric(n) || !is.numeric(a1) || !is.numeric(d)){
+        stop("Argumentos incorrectos")
+    }
+
+    v <- a1+d*0:(n-1)
+    suma <- sum(v)
+    produ <- prod(v)
+
+    if(explicit){
+        suma <- 40
+        produ <- 50
+    }
+
+    return(list(v=v, suma=suma, producto=produ))
+}
+
+progarit2(2, 2, 2, explicit=TRUE)
