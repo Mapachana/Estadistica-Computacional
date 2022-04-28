@@ -49,7 +49,7 @@ proggeo <- function(n, a1, r){
 
     prod1 <- prod(v)
 
-    # que a1 y r son positivos
+    # comprobamos que a1 y r son positivos
     if(a1>0 && r>0){
         prod2 <- (sqrt( a1^2 * r^(n-1) ))^n
     }
@@ -64,5 +64,3 @@ proggeo <- function(n, a1, r){
 proggeo(20,2,-0.5)
 proggeo(20,2,0.5)
 
-proggeo(19,-2,-0.5)
-proggeo(19,-2,0.5)
