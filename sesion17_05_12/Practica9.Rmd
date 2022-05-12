@@ -1,6 +1,7 @@
 # Ejercicios de la práctica del día 5 de Mayo
 
 > Por Ana Buendía Ruiz-Azuaga
+> Creado el 12 de Mayo
 
 ```{r }
 hatco <- read.csv(file="hatco2.csv", header=TRUE, as.is=NA)
@@ -89,4 +90,69 @@ crPlots(mod1)
 
 ## Ejercicio 9
 
-No me dio tiempo a hacerlo.
+Comenzamos identificando datos anómalos:
+
+```{r }
+res[abs(res) > 2.5]
+hatco[abs(res) > 2.5, "empresa"]
+```
+
+## Ejercicio 10
+
+Ahora identificamos datos más influyentes:
+
+```{r }
+cooks.distance(mod1)
+hatvalues(mod1)
+
+plot(hatco$empresa, cooks.distance(mod1))
+plot(hatco$empresa, hatvalues(mod1))
+
+influenceIndexPlot(mod1)
+```
+
+Vemos que las empresas más influyentes son las 7,22,55 y 100.
+
+Además, del apartado anterior tenemos que la 7 y 100 son anómalas.
+
+## Ejercicio 11
+
+```{r }
+hatco2 <- hatco[-c(7,100),]
+
+mod3<-lm(fidelidad~precio+flexprec+imgfabri+servconj+imgfvent+calidadp,hatco2)
+mod3
+
+summary(mod3)
+
+anova(mod3)
+
+```
+
+Vemos en el test anova que la medida residuals ha bajado de 19.4 a 16.3.
+
+## Ejercicio 12
+
+```{r }
+R<-cor(hatco[,6:12])
+ai<-eigen(R)$values # autovalores
+sqrt(max(ai)/min(ai)) # indice IC
+
+vif(mod2)
+```
+
+Como cada una de las 7 percepciones es menor que 5, tenemos que no existe un problema de multicolinealidad.
+
+## Ejercicio 13
+
+```{r }
+step(mod2)
+step(mod2, direction='both')
+```
+
+La reducción es bastante importante, pues el AIC se reduce significativamente.
+
+Además, se observa que las reducciones para atrás y con el argumento both devuelven exactamente el mismo resultado.
+
+
+
