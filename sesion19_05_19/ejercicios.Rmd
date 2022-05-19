@@ -1,0 +1,131 @@
+# Ejercicios 19 Mayo
+
+> Ana Buendía Ruiz-Azuaga
+
+## Tarea 1: Aproximación de una probabilidad
+
+```{r}
+nsim <- 1000
+set.seed(1)
+x <- runif(nsim, -1, 1)
+y <- runif(nsim, -1, 1)
+suceso <- (x^2+y^2<=1)
+mean(suceso)
+
+sd(suceso)/sqrt(nsim)
+
+estim <- cumsum(suceso)/(1:nsim)
+
+estim.err <- sqrt(cumsum((suceso-estim)^2))/(1:nsim)
+plot(1:nsim, estim, type='l', ylab='Aproximación y límites de error', xlab='Número de simulaciones', main=expression(P(X^2+Y^2<=1)), ylim=c(0,1))
+z <- qnorm(0.025, lower.tail = FALSE)
+lines(estim - z*estim.err, col='blue', lwd=2, lty=3)
+lines(estim + z*estim.err, col='blue', lwd=2, lty=3)
+
+print(pi/4)
+```
+
+Vemos que la aproximación es 0.77 mientras su valor real es 0.78, por lo que es cercana pero es mejorable. Para ello, bastaría aumentar el número de simulaciones.
+
+## Tarea 2: Aproximación de una integral
+
+Vamos a aproximar las dos integrales:
+
+```{r}
+f1 <- function(x) dbeta(x,2.5,5)
+curve(f1(x), 0.2, 0.4)
+
+f2 <- function(x) sin(x)*exp(-x)*dbeta(x,2.5,5)
+curve(f2(x), 0.1)
+```
+
+Realizamos ahora la aproximación mediante simulación.
+
+```{r}
+
+f1_integral <- function(x){
+  return(dbeta(x,2.5,5)*(x > 0.2 & x < 0.4))
+}
+nsim <- 1000
+set.seed(1)
+
+x1 <- runif(nsim)
+x2 <- runif(nsim)
+
+fx1 <- sapply(x1, f1_integral)
+fx2 <- sapply(x2, f2)
+
+mean(fx1)
+mean(fx2)
+
+estim1 <- cumsum(fx1)/(1:nsim)
+estim2 <- cumsum(fx2)/(1:nsim)
+
+estim1.error <- sqrt(cumsum((fx1-estim1)^2))/(1:nsim)
+estim2.error <- sqrt(cumsum((fx2-estim2)^2))/(1:nsim)
+
+plot(1:nsim, estim1, type='l', ylab='Aproximación y límites de error', xlab='Número de simulaciones')
+
+z <- qnorm(0.025, lower.tail = FALSE)
+lines(estim1 - z*estim1.error, col='blue', lwd=2, lty=3)
+lines(estim1 + z*estim1.error, col='blue', lwd=2, lty=3)
+
+plot(1:nsim, estim2, type='l', ylab='Aproximación y límites de error', xlab='Número de simulaciones')
+
+z <- qnorm(0.025, lower.tail = FALSE)
+lines(estim2 - z*estim2.error, col='blue', lwd=2, lty=3)
+lines(estim2 + z*estim2.error, col='blue', lwd=2, lty=3)
+
+```
+
+Ahora comparamos con los valores reales:
+
+```{r}
+integrate(f1, 0.2, 0.4)
+
+integrate(f2, -Inf, Inf)
+```
+Comprobamos que se obtienen valores similares para la aproximación y su valor real.
+
+## Tarea 3: Aproximación de uns distribución de probabilidad
+
+```{r}
+mu <- 3.5
+sig <- 1.1
+EX <- exp(mu+sig^2/2)
+VX <- EX^2*(exp(sig^2)-1); VX
+lam <- 17
+ES <- lam*EX; ES
+VS <- lam*VX + lam*EX^2;VS
+```
+```{r}
+nsim <- 5000
+S <- double(nsim)
+set.seed(1)
+for (i in 1:nsim)
+{
+  n <- rpois(1, lam)
+  if (n>0) S[i] <- sum(rlnorm(n, mu, sig))
+}
+hist(S, xlim=c(0,7000), breaks=20,prob=TRUE,ylim=c(0,1.2e-3))
+lines(density(S), col='red')
+```
+
+Calculamos ahora la media y la varianza de los valores simulados:
+
+```{r}
+mean(S)
+var(S)
+```
+Finalmente utilizando de nuevo los valores simulados para aproximar el VaR.
+
+```{r}
+quantile(S, 0.995)
+```
+
+Y comparamos con:
+
+```{r}
+qnorm(0.995, mean=ES, sd=sqrt(VS))
+```
+Son similares.
