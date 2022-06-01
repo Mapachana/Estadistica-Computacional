@@ -1,0 +1,104 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r}
+set.seed(1)
+
+n <- 50
+
+y <- rchisq(n, 30)
+x <- rnorm(n, 30, 5)
+
+mean(y)
+sd(y)
+quantile(y, c(0.25, 0.5, 0.75))
+
+hist(y, freq=FALSE, breaks='FD', ylim=c(0, 0.1))
+curve(dnorm(x, mean(y), sd(y)), add=TRUE, col="red")
+
+qqnorm(y)
+
+boxplot(y)
+
+boxplot(x,y, names=c("x", "y"))
+
+plot(x,y)
+
+fit <- lm(y~x)
+abline(fit)
+```
+```{r}
+ndados <- function(n=4){
+  dados <- sample(1:6, n, replace=TRUE)
+  return(6 %in% dados)
+}
+
+
+nsim <- 10000
+lanzamientos <- numeric(nsim)
+for (i in 1:nsim){
+  lanzamientos[i] <- ndados() 
+}
+
+mean(lanzamientos)
+
+1-(5/6)^4
+```
+```{r}
+rpareto <- function(x,a,b){
+  return ( (a*b^a)/(x^(a+1)) *(x>=b) )
+}
+
+ppareto <- function(x,a,b){
+  return ( 1-(b/x)^a *(x>=b) )
+}
+
+ipareto <- function(u,a,b){
+  return( b/((1-u)^(1/a)) )
+}
+
+nsim <- 1000
+a <- 5
+b <- 4
+
+u <- runif(nsim)
+
+x <- sapply(u, ipareto, a=a, b=b)
+
+hist(x, freq=FALSE)
+lines(density(x), col="blue")
+curve(rpareto(x,a,b), add=TRUE, col="red")
+
+ks.test(x, ppareto, a=a, b=b)
+
+```
+
+```{r}
+nsim <- 1000
+
+f <- function(x){
+  return( 1/(1+x^2) *(x>0 & x < 1) )
+}
+
+x <- runif(nsim)
+fx <- sapply(x, f)
+
+mean(fx)
+pi/4
+
+sd(x)/sqrt(nsim)
+
+estim <- cumsum(fx)/(1:nsim)
+
+estim.err <- sqrt(cumsum((fx-estim)^2))/(1:nsim)
+
+z <- qnorm(0.025, lower.tail=FALSE)
+
+plot(1:nsim, estim, type="l", ylab="Aproximación y límites de error", xlab="Número de simulaciones")
+lines(estim-z*estim.err, col="blue", lty=3, lwd=2)
+lines(estim+z*estim.err, col="blue", lty=3, lwd=2)
+abline(h= (pi/4), col="red")
+```
+
