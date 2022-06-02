@@ -1,0 +1,19 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+n <- 5
+rnorm(n, mean=0, sd=1)
+rexp(n, rate=1)
+rgamma(n, shape=2, rate=1)
+rf(n, df1=1, df2=3)
+rt(n, df=1)
+rchisq(n, df=1)
+rweibull(n, shape=2)
+rpois(n, lambda=2)
+rbinom(n, size=3, prob=c(0.2,0.2, 0.6))
+rgeom(n, prob=0.4)
+```
+
