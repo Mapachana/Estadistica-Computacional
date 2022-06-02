@@ -1,0 +1,59 @@
+# Examen 2
+
+> Ana Buendía Ruiz-Azuaga
+
+### Ejercicio 1
+
+#### Apartado 1
+
+```{r}
+airquality$Month <- factor(airquality$Month,labels=month.name[5:9])
+boxplot(airquality$Solar.R~airquality$Month, main="Radiación solar por meses")
+```
+
+#### Apartados 2 y 3
+
+```{r}
+plot(airquality$Solar.R,airquality$Ozone, main="Relación entre radiación solar y ozono")
+
+fit <- lm(airquality$Ozone~airquality$Solar.R)
+abline(fit, col="red")
+```
+
+
+### Ejercicio 2
+
+Comenzamos definiendo las funciones necesarias respectivas a la distribución de Pareto.
+
+```{r}
+# Función de densidad
+dpareto <- function(x,a,b){
+  return( (a*b^a)/(x^(a+1)) *(x>=b) )
+}
+
+# Función de distribución
+ppareto <- function(x,a,b){
+  return( (1-(b/x)^a) *(x>=b) )
+}
+
+# Inversa
+invpareto <- function(u,a,b){
+  return( b/((1-u)^(1/a)) )
+}
+
+n <- 1000
+a <- 5
+b <- 4
+
+u <- runif(n)
+x <- invpareto(u, a, b)
+
+# Evaluación mediante gráficos y Kolmogorov-Smirnov
+hist(x, freq=FALSE, breaks="FD", xlim=c(3.5,10), ylim=c(0, 1.2), main="Método de inversión para la distribución de Pareto")
+lines(density(x), col="blue")
+curve(dpareto(x,a,b), add=TRUE, col="red")
+
+ks.test(x, ppareto, a=a, b=b)
+```
+
+Vemos por el gráfico y el p-valor de Kolmogorov-Smirnov que en efecto los valores generados provienen de una distribución de Pareto.
